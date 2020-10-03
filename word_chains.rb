@@ -8,11 +8,20 @@
 
 puts "Phase I: Adjacent Words"
 # Let's write a class WordChainer.
-
+class WordChainer
 # Begin writing the #initialize(dictionary_file_name) method. Read in the 
 # dictionary file. Store the array of dictionary words in an instance variable 
 # (e.g., @dictionary).
 # https://assets.aaonline.io/fullstack/ruby/projects/word_chains/dictionary.txt
+
+    def initialize
+        @dict = []
+        get_dict
+    end
+
+    def get_dict
+        IO.readlines("dictionary.txt").each { |line| @dict << line.chomp.split("") }
+    end
 
 # Next, write a helper method adjacent_words(word). This should return all words 
 # in the dictionary one letter different than the current word. 
@@ -118,3 +127,5 @@ puts "Bonus Phase: Stop Early"
 # Your run method will build the entire set of reachable words. This is wasteful 
 # if the source is close to the target. We can stop early in that case. Modify 
 #     run to stop looping when @all_seen_words contains the target.
+
+end
