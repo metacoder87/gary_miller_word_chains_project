@@ -67,7 +67,7 @@ puts "Phase IIa: Exploring all words"
             new_current_words = []
             @current_words.each { |new_word| @all_seen_words.include?(new_word) ? next : new_current_words << adjacent_words(new_word) }
 # To fill up new_current_words, begin a second, inner loop through @current_words.
-            @current_words.each { |current_word| current_word.each}
+            @current_words.each { |current_word| current_word.each }
 # For each current_word, begin a third loop, iterating through all 
 # adjacent_words(current_word). This is a triply nested loop.
 
