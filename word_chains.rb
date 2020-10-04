@@ -36,7 +36,7 @@ class WordChainer
        @dict.select do |match|
             if match.length == word.length
                 word.length.times do |i| 
-                    matches << match if word[0...i] + word[i+1..-1] == match.join('')[0...i] + match.join('')[i+1..-1]
+                    matches << match.join('') if word[0...i] + word[i+1..-1] == match.join('')[0...i] + match.join('')[i+1..-1]
                 end
             end
         end
@@ -76,12 +76,12 @@ puts "Phase IIa: Exploring all words"
                 adjacent_words(word).each do |adjacent_word|
 # For each adjacent_word, skip it if it's already in @all_seen_words; we don't 
 # need to reconsider a word we've seen before.
-                    next if @all_seen_words.include?(adjacent_word.join(''))
+                    next if @all_seen_words.include?(adjacent_word)
 
 # Otherwise, if it's a new word, add it to both new_current_words, and 
 # @all_seen_words so we don't repeat it.
-                        new_current_words << adjacent_word.join('')
-                        @all_seen_words << adjacent_word.join('')
+                        new_current_words << adjacent_word
+                        @all_seen_words << adjacent_word
 
 # After we finish looping through all the @current_words, print out 
 # new_current_words, and reset @current_words to new_current_words.
