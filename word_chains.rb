@@ -15,7 +15,7 @@ class WordChainer
 # https://assets.aaonline.io/fullstack/ruby/projects/word_chains/dictionary.txt
 
     def initialize
-        @dict = []
+        @dict = Set.new
         get_dict
     end
 
@@ -28,6 +28,17 @@ class WordChainer
 # By "one letter different" we mean that both words have the same length and only 
 # differ at one position, e.g. "mat" and "cat" count as adjacent words, but "cat" 
 # and "cats" do not, nor do "cola" and "cool."
+
+    def adjacent_words(word, matches = [])
+       @dict.select do |match|
+            if match.length == word.length
+                word.length.times do |i| 
+                    matches << match if word[0...i] + word[i+1..-1] == match.join('')[0...i] + match.join('')[i+1..-1]
+                end
+            end
+        end
+        matches.uniq
+    end
 
 # Verify that your adjacent_words method is working.
 
