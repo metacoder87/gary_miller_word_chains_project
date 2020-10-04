@@ -65,18 +65,19 @@ puts "Phase IIa: Exploring all words"
 # to fill this up with new words (that aren't in @all_seen_words) that are 
 # adjacent (one step away) from a word in @current_words.
             new_current_words = []
-            @current_words.each { |new_word| @all_seen_words.include?(new_word) ? next : new_current_words << adjacent_words(new_word) }
+
 # To fill up new_current_words, begin a second, inner loop through @current_words.
-            @current_words.each { |current_word| current_word.each }
+            @current_words.each do |current_word| 
 # For each current_word, begin a third loop, iterating through all 
 # adjacent_words(current_word). This is a triply nested loop.
-
+                adjacent_words(current_word).each do |adjacent_word|
 # For each adjacent_word, skip it if it's already in @all_seen_words; we don't 
 # need to reconsider a word we've seen before.
-
+                    next if @all_seen_words.include?(adjacent_word)
 # Otherwise, if it's a new word, add it to both new_current_words, and 
 # @all_seen_words so we don't repeat it.
-
+                        @new_current_words << adjacent_word
+                        @all_seen_words << adjacent_word
 # After we finish looping through all the @current_words, print out 
 # new_current_words, and reset @current_words to new_current_words.
 
