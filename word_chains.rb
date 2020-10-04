@@ -14,11 +14,11 @@ class WordChainer
 # (e.g., @dictionary).
 # https://assets.aaonline.io/fullstack/ruby/projects/word_chains/dictionary.txt
 
+    attr_reader :current_word, :dict
+
     def initialize(source)
         @dict = Set.new
-        @current_word = ""
-        @current_words = [source]
-        @all_seen_words = [source]
+        @current_word = source
         get_dict
     end
 
@@ -56,28 +56,33 @@ puts "Phase IIa: Exploring all words"
 # Keep a list of @current_words. Start this with just [source].
 
 # Also keep a list of @all_seen_words. Start this with just [source].
-    def run(source, target)
+    def run(source, *target)
+        @all_seen_words = [source]
+        @current_words = [source]
+
 # Begin an outer loop which will run as long as @current_words is not empty. 
 # This will halt our exploration when all words adjacent to @current_word have 
 # been discovered.
-        while @current_words.first
+        until @current_words.empty?
 # Inside this loop, create a new, empty list of new_current_words. We're going 
 # to fill this up with new words (that aren't in @all_seen_words) that are 
 # adjacent (one step away) from a word in @current_words.
             new_current_words = []
 
 # To fill up new_current_words, begin a second, inner loop through @current_words.
-            @current_words.each do |current_word| 
+            @current_words.each do |word| 
 # For each current_word, begin a third loop, iterating through all 
 # adjacent_words(current_word). This is a triply nested loop.
-                adjacent_words(current_word).each do |adjacent_word|
+                adjacent_words(word).each do |adjacent_word|
 # For each adjacent_word, skip it if it's already in @all_seen_words; we don't 
 # need to reconsider a word we've seen before.
-                    next if @all_seen_words.include?(adjacent_word)
+                    next if @all_seen_words.include?(adjacent_word.join(''))
+
 # Otherwise, if it's a new word, add it to both new_current_words, and 
 # @all_seen_words so we don't repeat it.
-                        @new_current_words << adjacent_word
-                        @all_seen_words << adjacent_word
+                        new_current_words << adjacent_word.join('')
+                        @all_seen_words << adjacent_word.join('')
+
 # After we finish looping through all the @current_words, print out 
 # new_current_words, and reset @current_words to new_current_words.
                 end
@@ -148,3 +153,7 @@ puts "Bonus Phase: Stop Early"
 #     run to stop looping when @all_seen_words contains the target.
 
 end
+
+
+words = WordChainer.new('yet')
+words.run(words.current_word)
