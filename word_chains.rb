@@ -14,8 +14,11 @@ class WordChainer
 # (e.g., @dictionary).
 # https://assets.aaonline.io/fullstack/ruby/projects/word_chains/dictionary.txt
 
-    def initialize
+    def initialize(source)
         @dict = Set.new
+        @current_word = ""
+        @current_words = [source]
+        @all_seen_words = [source]
         get_dict
     end
 
@@ -53,17 +56,18 @@ puts "Phase IIa: Exploring all words"
 # Keep a list of @current_words. Start this with just [source].
 
 # Also keep a list of @all_seen_words. Start this with just [source].
-
+    def run(source, target)
 # Begin an outer loop which will run as long as @current_words is not empty. 
 # This will halt our exploration when all words adjacent to @current_word have 
 # been discovered.
-
+        while @current_words.first
 # Inside this loop, create a new, empty list of new_current_words. We're going 
 # to fill this up with new words (that aren't in @all_seen_words) that are 
 # adjacent (one step away) from a word in @current_words.
-
+            new_current_words = []
+            @current_words.each { |new_word| @all_seen_words.include?(new_word) ? next : new_current_words << adjacent_words(new_word) }
 # To fill up new_current_words, begin a second, inner loop through @current_words.
-
+            @current_words.each { |current_word| current_word.each}
 # For each current_word, begin a third loop, iterating through all 
 # adjacent_words(current_word). This is a triply nested loop.
 
