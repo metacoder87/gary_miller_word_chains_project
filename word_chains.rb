@@ -80,12 +80,15 @@ puts "Phase IIa: Exploring all words"
                         @all_seen_words << adjacent_word
 # After we finish looping through all the @current_words, print out 
 # new_current_words, and reset @current_words to new_current_words.
-
+                end
+            end
+            p @current_words = new_current_words
 # Make sure your run method eventually terminates: it should eventually enumerate 
 # all the words that are reachable from source, at which point new_current_words 
 # will come out empty. After setting @current_words = new_current_words the 
 # outermost loop should terminate.
-
+        end
+    end
 # After executing #run, @all_seen_words will contain a list of all the words 
 # encountered in our 'exploration.'
 
