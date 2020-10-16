@@ -53,15 +53,7 @@ puts "Phase IIa: Exploring all words"
         @all_seen_words = [source]
         @current_words = [source]
         until @current_words.empty?
-            new_current_words = []
-            @current_words.each do |current_word| 
-                adjacent_words(current_word).each do |adjacent_word|
-                    next if @all_seen_words.include?(adjacent_word)
-                        new_current_words << adjacent_word
-                        @all_seen_words << adjacent_word
-                    end
-                end
-            p @current_words = new_current_words
+            explore_current_words
         end
     end
 
@@ -111,6 +103,18 @@ puts "Phase IIb: Refactor"
 # Your code will contain a triply nested loop. Break out the inner loop that 
 # iterates through @current_words and builds and assigns the new_current_words to 
 # its own method: #explore_current_words.
+
+    def explore_current_words
+        new_current_words = []
+            @current_words.each do |current_word| 
+                adjacent_words(current_word).each do |adjacent_word|
+                    next if @all_seen_words.include?(adjacent_word)
+                        new_current_words << adjacent_word
+                        @all_seen_words << adjacent_word
+                    end
+                end
+            p @current_words = new_current_words
+    end
 
 puts "Phase III: Keep Track of Prior Words"
 # So far we've written our program to build a set of @all_seen_words, adding new 
