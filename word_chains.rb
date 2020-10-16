@@ -15,15 +15,8 @@ class WordChainer
 # (e.g., @dictionary).
 # https://assets.aaonline.io/fullstack/ruby/projects/word_chains/dictionary.txt
 
-    def initialize
-        @dict = Set.new
-        @current_word = ""
-        get_dict
-    end
-
-    def get_dict
-        
-        IO.readlines("dictionary.txt").each { |line| @dict << line.chomp.split("") }
+    def self.get_dict
+        @@dict = Set.new(IO.readlines("dictionary.txt").map { |line| line.chomp.split("") })
     end
 
 # Next, write a helper method adjacent_words(word). This should return all words 
@@ -33,7 +26,7 @@ class WordChainer
 # and "cats" do not, nor do "cola" and "cool."
 
     def adjacent_words(word, matches = [])
-       @dict.select do |match|
+       @@dict.select do |match|
             if match.length == word.length
                 word.length.times do |i| 
                     matches << match.join('') if word[0...i] + word[i+1..-1] == match.join('')[0...i] + match.join('')[i+1..-1]
@@ -59,39 +52,51 @@ puts "Phase IIa: Exploring all words"
     def run(source, *target)
         @all_seen_words = [source]
         @current_words = [source]
+        until @current_words.empty?
+            new_current_words = []
+            @current_words.each do |current_word| 
+                adjacent_words(current_word).each do |adjacent_word|
+                    next if @all_seen_words.include?(adjacent_word)
+                        new_current_words << adjacent_word
+                        @all_seen_words << adjacent_word
+                    end
+                end
+            p @current_words = new_current_words
+        end
+    end
 
 # Begin an outer loop which will run as long as @current_words is not empty. 
 # This will halt our exploration when all words adjacent to @current_word have 
 # been discovered.
-        until @current_words.empty?
+        # until @current_words.empty?
 # Inside this loop, create a new, empty list of new_current_words. We're going 
 # to fill this up with new words (that aren't in @all_seen_words) that are 
 # adjacent (one step away) from a word in @current_words.
-            new_current_words = []
+            # new_current_words = []
 
 # To fill up new_current_words, begin a second, inner loop through @current_words.
-            @current_words.each do |current_word| 
+            # @current_words.each do |current_word| 
 # For each current_word, begin a third loop, iterating through all 
 # adjacent_words(current_word). This is a triply nested loop.
-                adjacent_words(current_word).each do |adjacent_word|
+                # adjacent_words(current_word).each do |adjacent_word|
 # For each adjacent_word, skip it if it's already in @all_seen_words; we don't 
 # need to reconsider a word we've seen before.
-                    next if @all_seen_words.include?(adjacent_word)
+                    # next if @all_seen_words.include?(adjacent_word)
 # Otherwise, if it's a new word, add it to both new_current_words, and 
 # @all_seen_words so we don't repeat it.
-                        new_current_words << adjacent_word
-                        @all_seen_words << adjacent_word
+                        # new_current_words << adjacent_word
+                        # @all_seen_words << adjacent_word
 # After we finish looping through all the @current_words, print out 
 # new_current_words, and reset @current_words to new_current_words.
-                end
-            end
-            p @current_words = new_current_words
+                # end
+            # end
+            # p @current_words = new_current_words
 # Make sure your run method eventually terminates: it should eventually enumerate 
 # all the words that are reachable from source, at which point new_current_words 
 # will come out empty. After setting @current_words = new_current_words the 
 # outermost loop should terminate.
-        end
-    end
+        # end
+    # end
 # After executing #run, @all_seen_words will contain a list of all the words 
 # encountered in our 'exploration.'
 
@@ -152,6 +157,7 @@ puts "Bonus Phase: Stop Early"
 
 end
 
+WordChainer.get_dict
 word = WordChainer.new
 word.run('yet')
 # word.run('absurd')
