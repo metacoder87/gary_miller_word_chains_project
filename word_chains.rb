@@ -131,7 +131,7 @@ puts "Phase III: Keep Track of Prior Words"
     def run(source, target)
         @all_seen_words = { source => nil }
         @current_words = [source]
-        until @current_words.empty?
+        until @all_seen_words.include?(target)
             explore_current_words
         end
         build_path(target)
