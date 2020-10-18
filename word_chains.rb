@@ -49,13 +49,13 @@ puts "Phase IIa: Exploring all words"
 # Keep a list of @current_words. Start this with just [source].
 
 # Also keep a list of @all_seen_words. Start this with just [source].
-    def run(source, *target)
-        @all_seen_words = [source]
-        @current_words = [source]
-        until @current_words.empty?
-            explore_current_words
-        end
-    end
+    # def run(source, *target)
+    #     @all_seen_words = [source]
+    #     @current_words = [source]
+    #     until @current_words.empty?
+    #         explore_current_words
+    #     end
+    # end
 
 # Begin an outer loop which will run as long as @current_words is not empty. 
 # This will halt our exploration when all words adjacent to @current_word have 
@@ -104,17 +104,17 @@ puts "Phase IIb: Refactor"
 # iterates through @current_words and builds and assigns the new_current_words to 
 # its own method: #explore_current_words.
 
-    def explore_current_words
-        new_current_words = []
-            @current_words.each do |current_word| 
-                adjacent_words(current_word).each do |adjacent_word|
-                    next if @all_seen_words.include?(adjacent_word)
-                        new_current_words << adjacent_word
-                        @all_seen_words << adjacent_word
-                    end
-                end
-            p @current_words = new_current_words
-    end
+    # def explore_current_words
+    #     new_current_words = []
+    #         @current_words.each do |current_word| 
+    #             adjacent_words(current_word).each do |adjacent_word|
+    #                 next if @all_seen_words.include?(adjacent_word)
+    #                     new_current_words << adjacent_word
+    #                     @all_seen_words << adjacent_word
+    #                 end
+    #             end
+    #         p @current_words = new_current_words
+    # end
 
 puts "Phase III: Keep Track of Prior Words"
 # So far we've written our program to build a set of @all_seen_words, adding new 
@@ -126,10 +126,31 @@ puts "Phase III: Keep Track of Prior Words"
 # an array of @all_seen_words, lets make it a hash, where the keys are new words, 
 # and the value is the word we modified to get to the new word.
 
+    def run(source, *target)
+        @all_seen_words = { source => nil }
+        @current_words = [source]
+        until @current_words.empty?
+            explore_current_words
+        end
+    end
+
 # Let's start @all_seen_words out as { source => nil }, since source didn't come 
 # from anywhere. Let's modify explore_current_words so that instead of merely 
 # adding an adjacent_word to the array, we record it as the key, where the value 
 # is the current_word we came from.
+
+    def explore_current_words
+        new_current_words = []
+            @current_words.each do |current_word| 
+                adjacent_words(current_word).each do |adjacent_word|
+                    next if @all_seen_words.include?(adjacent_word)
+                        new_current_words << adjacent_word
+                        @all_seen_words[adjacent_word] = current_word
+                    end
+                end
+                new_current_words.each { |word| puts "#{word} came from #{@all_seen_words[word]}" }
+            @current_words = new_current_words
+    end
 
 # Modify explore_current_words to print not just the new words, but where they 
 # came from. At the end of explore_current_words, iterate through 
