@@ -15,6 +15,8 @@ class WordChainer
 # (e.g., @dictionary).
 # https://assets.aaonline.io/fullstack/ruby/projects/word_chains/dictionary.txt
 
+    attr_reader :all_seen_words
+
     def self.get_dict
         @@dict = Set.new(IO.readlines("dictionary.txt").map { |line| line.chomp.split("") })
     end
@@ -126,12 +128,13 @@ puts "Phase III: Keep Track of Prior Words"
 # an array of @all_seen_words, lets make it a hash, where the keys are new words, 
 # and the value is the word we modified to get to the new word.
 
-    def run(source, *target)
+    def run(source, target)
         @all_seen_words = { source => nil }
         @current_words = [source]
         until @current_words.empty?
             explore_current_words
         end
+        build_path(target)
     end
 
 # Let's start @all_seen_words out as { source => nil }, since source didn't come 
@@ -167,6 +170,16 @@ puts "Phase IV: Backtracking"
 # Then we need to look up the word we used to get the second to last word. Then 
 # the word before that.
 
+    def build_path(target)
+        path = []
+        path << target
+        path << @all_seen_words[target]
+        while @all_seen_words[path.last] != nil
+            path << @all_seen_words[path.last]
+        end
+        p path.reverse.join(" => ")
+    end
+
 # Keep looking back and back in from target in @all_seen_words. Each time, add 
 # the prior word to an array named path. Eventually you will reach nil, which 
 # means we've reached the end of the path back to source.
@@ -184,6 +197,7 @@ end
 
 WordChainer.get_dict
 word = WordChainer.new
-word.run('yet')
+word.run('yet', 'ohm')
+# word.build_path('ohm')
 # word.run('absurd')
 # word.run('bird')
