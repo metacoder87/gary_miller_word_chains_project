@@ -1,3 +1,8 @@
+            # meta_coder (Gary Miller) =)
+            # gmiller052611@gmail.com
+            # https://github.com/metacoder87/gary_miller_word_chains_project
+
+
 require 'set'
 # Word Chains
 # Read the Word Chains RubyQuiz.
@@ -200,3 +205,8 @@ word = WordChainer.new
 word.run('yet', 'ohm')
 word.run('work', 'lose')
 word.run('end', 'win')
+
+
+            # meta_coder (Gary Miller) =)
+            # gmiller052611@gmail.com
+            # https://github.com/metacoder87/gary_miller_word_chains_project
