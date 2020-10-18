@@ -151,7 +151,7 @@ puts "Phase III: Keep Track of Prior Words"
                         @all_seen_words[adjacent_word] = current_word
                     end
                 end
-                new_current_words.each { |word| puts "#{word} came from #{@all_seen_words[word]}" }
+                # new_current_words.each { |word| puts "#{word} came from #{@all_seen_words[word]}" }
             @current_words = new_current_words
     end
 
@@ -177,7 +177,7 @@ puts "Phase IV: Backtracking"
         while @all_seen_words[path.last] != nil
             path << @all_seen_words[path.last]
         end
-        p path.reverse.join(" => ")
+        p path.reverse.map { |word| word.upcase }.join(" became ")
     end
 
 # Keep looking back and back in from target in @all_seen_words. Each time, add 
@@ -198,6 +198,5 @@ end
 WordChainer.get_dict
 word = WordChainer.new
 word.run('yet', 'ohm')
-# word.build_path('ohm')
-# word.run('absurd')
-# word.run('bird')
+word.run('work', 'lose')
+word.run('end', 'win')
